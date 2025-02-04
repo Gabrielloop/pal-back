@@ -1,11 +1,22 @@
 package com.greta.PalBack.entities;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public class Book {
+
+    @Size(min = 10, max = 13, message = "ISBN invalide")
+    @NotNull(message = "ISBN requis")
+    @NotBlank(message = "ISBN requis")
     private String isbn;
+
+    @NotBlank(message = "Titre requis")
     private String title;
+
+    @NotBlank(message = "Auteur requis")
     private String author;
+
     private String publisher;
     private Long year;
     private String updatedTime;

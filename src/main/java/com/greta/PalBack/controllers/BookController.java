@@ -3,6 +3,7 @@ package com.greta.PalBack.controllers;
 
 import com.greta.PalBack.daos.BookDao;
 import com.greta.PalBack.entities.Book;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Book> saveBook(@RequestBody Book book) {
+    public ResponseEntity<Book> saveBook(@Valid @RequestBody Book book) {
         Book createdBook = bookDao.save(book);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
     }
