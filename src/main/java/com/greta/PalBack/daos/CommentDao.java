@@ -1,6 +1,7 @@
 package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.Comment;
+import com.greta.PalBack.exceptions.ResourceNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -38,7 +39,7 @@ public Comment findByIsbnAndUser(String isbn, Integer userId) {
     return JdbcTemplate.query(sql, commentRowMapper, isbn)
             .stream()
             .findFirst()
-            .orElseThrow(() -> new RuntimeException("Pas de correspondante avec l'isbn " + isbn + "."));
+            .orElseThrow(() -> new ResourceNotFoundException("Pas de correspondante avec l'isbn " + isbn + "."));
 }
 
 
@@ -54,23 +55,12 @@ public Comment save(Comment comment) {
 }
 
 public Comment update(String isbn, Integer userId, Comment comment) {
-    if(!CommentExists(isbn, userId)) {
-        throw new RuntimeException("Pas de correspondante avec l'isbn " + isbn + ".");
-    }
-
     String sql = "UPDATE comment SET comment_content = ? WHERE isbn = ? & user_id = ?";
     int rowAffected = JdbcTemplate.update(sql, comment.getIsbn(), comment.getUserId(), comment.getCommentContent(), comment.getCreateTime(), isbn, userId);
     if(rowAffected <= 0) {
-        throw new RuntimeException("Echec de la modification avec l'isbn " + isbn + ".");
+        throw new ResourceNotFoundException("Echec de la modification avec l'isbn " + isbn + ".");
     }
     return  this.findByIsbnAndUser(isbn, userId);
-    }
-
-    private boolean CommentExists(String isbn, Integer userId) {
-    String checkSql = "SELECT COUNT(*) FROM comment WHERE isbn = ? & user_id = ?";
-    int count = JdbcTemplate.queryForObject(checkSql,Integer.class, isbn, userId);
-    return count > 0;
-
 }
 
 public boolean delete(String isbn, Integer userId) {

@@ -1,6 +1,7 @@
 package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.Note;
+import com.greta.PalBack.exceptions.ResourceNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -38,7 +39,7 @@ public Note findByIsbnAndUser(String isbn, Integer userId) {
     return JdbcTemplate.query(sql, noteRowMapper, isbn, userId)
             .stream()
             .findFirst()
-            .orElseThrow(() -> new RuntimeException("Pas de correspondante avec l'isbn " + isbn + "."));
+            .orElseThrow(() -> new ResourceNotFoundException("Pas de correspondante avec l'isbn " + isbn + "."));
 }
 
 
@@ -54,23 +55,12 @@ public Note save(Note note) {
 }
 
 public Note update(String isbn, Integer userId, Note note) {
-    if(!NoteExists(isbn, userId)) {
-        throw new RuntimeException("Pas de correspondante avec l'isbn " + isbn + ".");
-    }
-
     String sql = "UPDATE note SET note_content = ? WHERE isbn = ? & user_id = ?";
     int rowAffected = JdbcTemplate.update(sql, note.getIsbn(), note.getUserId(), note.getNoteContent(), note.getCreateTime(), isbn, userId);
     if(rowAffected <= 0) {
-        throw new RuntimeException("Echec de la modification avec l'isbn " + isbn + ".");
+        throw new ResourceNotFoundException("Echec de la modification avec l'isbn " + isbn + ".");
     }
     return  this.findByIsbnAndUser(isbn, userId);
-    }
-
-    private boolean NoteExists(String isbn, Integer userId) {
-    String checkSql = "SELECT COUNT(*) FROM note WHERE isbn = ? & user_id = ?";
-    int count = JdbcTemplate.queryForObject(checkSql,Integer.class, isbn, userId);
-    return count > 0;
-
 }
 
 public boolean delete(String isbn, Integer userId) {

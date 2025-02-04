@@ -1,6 +1,7 @@
 package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.User;
+import com.greta.PalBack.exceptions.ResourceNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -35,7 +36,7 @@ public UserDao(JdbcTemplate jdbcTemplate) {
         return JdbcTemplate.query(sql, userRowMapper, userId)
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Pas d'utilisateur trouvé avec l'id " + userId + "."));
+                .orElseThrow(() -> new ResourceNotFoundException("Pas d'utilisateur trouvé avec l'id " + userId + "."));
     }
 
 
@@ -54,13 +55,13 @@ public UserDao(JdbcTemplate jdbcTemplate) {
         String sqlCheckUser = "SELECT COUNT(*) FROM user WHERE user_id = ?";
         int userExists = JdbcTemplate.queryForObject(sqlCheckUser, Integer.class, userId);
         if (userExists <= 0) {
-            throw new RuntimeException("Pas d'utilisateur trouvé avec l'id " + userId + ".");
+            throw new ResourceNotFoundException("Pas d'utilisateur trouvé avec l'id " + userId + ".");
         }
 
         String sql = "UPDATE user SET user_name = ?, user_mail = ?, user_password = ?, user_last_login = ?, create_time = ? WHERE user_id = ?";
         int rowsAffected = JdbcTemplate.update(sql, user.getUserName(), user.getUser_mail(), user.getUserPassword(), user.getUserLastLogin(), user.getCreateTime(), userId);
         if (rowsAffected <= 0) {
-            throw new RuntimeException("Echec de la modification de l'utilisateur avec l'id " + userId + ".");
+            throw new ResourceNotFoundException("Echec de la modification de l'utilisateur avec l'id " + userId + ".");
         }
 
         return this.findUserById(userId);

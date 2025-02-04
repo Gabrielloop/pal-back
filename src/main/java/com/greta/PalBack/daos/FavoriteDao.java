@@ -1,6 +1,7 @@
 package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.Favorite;
+import com.greta.PalBack.exceptions.ResourceNotFoundException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -37,7 +38,7 @@ public class FavoriteDao {
         return JdbcTemplate.query(sql, favoriteRowMapper, isbn, userId)
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Pas de correspondante avec l'isbn " + isbn + "."));
+                .orElseThrow(() -> new ResourceNotFoundException("Pas de correspondante avec l'isbn " + isbn + "."));
     }
 
 
@@ -71,7 +72,7 @@ public class FavoriteDao {
         Favorite favorite = JdbcTemplate.query(checkSql, favoriteRowMapper, isbn, userId)
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Pas de correspondance avec l'isbn"));
+                .orElseThrow(() -> new ResourceNotFoundException("Pas de correspondance avec l'isbn"));
         return favorite != null;
     }
 

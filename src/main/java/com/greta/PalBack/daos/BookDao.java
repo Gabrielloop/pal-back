@@ -1,6 +1,7 @@
 package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.Book;
+import com.greta.PalBack.exceptions.ResourceNotFoundException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -41,7 +42,7 @@ public Book findByIsbn(String isbn) {
     return JdbcTemplate.query(sql, bookRowMapper, isbn)
             .stream()
             .findFirst()
-            .orElseThrow(() -> new RuntimeException("Pas de correspondante avec l'isbn " + isbn + "."));
+            .orElseThrow(() -> new ResourceNotFoundException("Pas de correspondante avec l'isbn " + isbn + "."));
 }
 
 public List<Book> findByTitle(String title) {
@@ -61,26 +62,12 @@ public Book save(Book book) {
 }
 
 public Book update(String isbn, Book book) {
-    if(!bookExists(isbn)) {
-        throw new RuntimeException("Pas de correspondante avec l'isbn " + isbn + ".");
-    }
-
     String sql = "UPDATE book SET book_title = ?,book_author = ?, book_publisher = ?, book_year = ?, book_updated_time = ?, book_create_time = ? WHERE isbn = ?";
     int rowAffected = JdbcTemplate.update(sql, book.getTitle(), book.getAuthor(), book.getPublisher(), book.getYear(), book.getUpdatedTime(), book.getCreateTime(), isbn);
     if(rowAffected <= 0) {
-        throw new RuntimeException("Echec de la modification avec l'isbn " + isbn + ".");
+        throw new ResourceNotFoundException("Echec de la modification avec l'isbn " + isbn + ".");
     }
     return  this.findByIsbn(isbn);
-    }
-
-    private boolean bookExists(String isbn) {
-    String checkSql = "SELECT COUNT(*) FROM book WHERE isbn = ?";
-    Book book = JdbcTemplate.query(checkSql, bookRowMapper, isbn)
-            .stream()
-            .findFirst()
-            .orElseThrow(() -> new RuntimeException("Pas de correspondante avec l'isbn " + isbn + "."));
-    return book != null;
-
 }
 
 public boolean delete(String isbn) {
