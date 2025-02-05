@@ -13,14 +13,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/books") // http://localhost:8808/books
 public class BookController {
+
     private final BookDao bookDao;
     public BookController(BookDao bookDao) {
         this.bookDao = bookDao;
     }
+
     @GetMapping("/all")
     public ResponseEntity<List<Book>> getAllBooks() {
         return ResponseEntity.ok(bookDao.findAll());
     }
+
     @GetMapping("/isbn/{isbn}")
     public ResponseEntity<Book> getBookByIsbn(@PathVariable String isbn) {
         return ResponseEntity.ok(bookDao.findByIsbn(isbn));

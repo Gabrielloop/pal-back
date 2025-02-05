@@ -2,19 +2,23 @@ package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.Userlist;
 import com.greta.PalBack.exceptions.ResourceNotFoundException;
+import com.greta.PalBack.services.DateTimeService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 public class UserlistDao {
 
 private final JdbcTemplate JdbcTemplate;
+private final DateTimeService dateTimeService;
 
-public UserlistDao(JdbcTemplate jdbcTemplate) {
+public UserlistDao(JdbcTemplate jdbcTemplate, DateTimeService dateTimeService) {
     this.JdbcTemplate = jdbcTemplate;
+    this.dateTimeService = dateTimeService;
 }
 
 private final RowMapper<Userlist> userlistRowMapper = (rs, _) -> new Userlist(
@@ -52,7 +56,7 @@ public List<Userlist> findByTitle(String title) {
 
 public Userlist save(Userlist userlist) {
     String sql = "INSERT INTO userlist (user_id, userlist_name, userlist_description, userlist_type, userlist_create_time) VALUES (?, ?, ?, ?, ?)";
-    JdbcTemplate.update(sql, userlist.getUserId(), userlist.getUserlistName(), userlist.getUserlistDescription(), userlist.getUserlistType(), userlist.getUserlistCreatetime());
+    JdbcTemplate.update(sql, userlist.getUserId(), userlist.getUserlistName(), userlist.getUserlistDescription(), userlist.getUserlistType(), dateTimeService.getCurrentDateTime());
 
     String sqlGetUserlistId = "SELECT LAST_INSERT_ID()";
     Integer userlistId = JdbcTemplate.queryForObject(sqlGetUserlistId, Integer.class);

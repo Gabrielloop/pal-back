@@ -2,6 +2,7 @@ package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.Book;
 import com.greta.PalBack.exceptions.ResourceNotFoundException;
+import com.greta.PalBack.services.DateTimeService;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,9 +13,11 @@ import java.util.List;
 public class BookDao {
 
 private final JdbcTemplate JdbcTemplate;
+private final DateTimeService dateTimeService;
 
-public BookDao(JdbcTemplate jdbcTemplate) {
+public BookDao(JdbcTemplate jdbcTemplate, DateTimeService dateTimeService) {
     this.JdbcTemplate = jdbcTemplate;
+    this.dateTimeService = dateTimeService;
 }
 
 private final RowMapper<Book> bookRowMapper = (rs, _) -> new Book(
@@ -23,8 +26,8 @@ private final RowMapper<Book> bookRowMapper = (rs, _) -> new Book(
         rs.getString("book_author"),
         rs.getString("book_publisher"),
         rs.getLong("book_year"),
-        rs.getString("book_updated_time"),
-        rs.getString("book_create_time")
+        rs.getTimestamp("book_updated_time").toLocalDateTime(),
+        rs.getTimestamp("book_create_time").toLocalDateTime()
 );
 
 public List<Book> findAll() {
@@ -53,7 +56,7 @@ public List<Book> findByTitle(String title) {
 
 public Book save(Book book) {
     String sql = "INSERT INTO book (isbn, book_title, book_author, book_publisher, book_year, book_updated_time, book_create_time) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    JdbcTemplate.update(sql, book.getIsbn(), book.getTitle(), book.getAuthor(), book.getPublisher(), book.getYear(), book.getUpdatedTime(), book.getCreateTime());
+    JdbcTemplate.update(sql, book.getIsbn(), book.getTitle(), book.getAuthor(), book.getPublisher(), book.getYear(), dateTimeService.getCurrentDateTime(),dateTimeService.getCurrentDateTime());
 
     String sqlGetIsbn = "SELECT LAST_INSERT_ID()";
     String isbn = JdbcTemplate.queryForObject(sqlGetIsbn, String.class);
@@ -64,7 +67,7 @@ public Book save(Book book) {
 
 public Book update(String isbn, Book book) {
     String sql = "UPDATE book SET book_title = ?,book_author = ?, book_publisher = ?, book_year = ?, book_updated_time = ?, book_create_time = ? WHERE isbn = ?";
-    int rowAffected = JdbcTemplate.update(sql, book.getTitle(), book.getAuthor(), book.getPublisher(), book.getYear(), book.getUpdatedTime(), book.getCreateTime(), isbn);
+    int rowAffected = JdbcTemplate.update(sql, book.getTitle(), book.getAuthor(), book.getPublisher(), book.getYear(), dateTimeService.getCurrentDateTime(), book.getCreateTime(), isbn);
     if(rowAffected <= 0) {
         throw new ResourceNotFoundException("Echec de la modification avec l'isbn " + isbn + ".");
     }

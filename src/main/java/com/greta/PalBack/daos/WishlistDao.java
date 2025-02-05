@@ -2,6 +2,7 @@ package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.Wishlist;
 import com.greta.PalBack.exceptions.ResourceNotFoundException;
+import com.greta.PalBack.services.DateTimeService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -12,9 +13,11 @@ import java.util.List;
 public class WishlistDao {
 
     private final JdbcTemplate JdbcTemplate;
+    private final DateTimeService dateTimeService;
 
-    public WishlistDao(JdbcTemplate jdbcTemplate) {
+    public WishlistDao(JdbcTemplate jdbcTemplate, DateTimeService dateTimeService) {
         this.JdbcTemplate = jdbcTemplate;
+        this.dateTimeService = dateTimeService;
     }
 
     private final RowMapper<Wishlist> wishlistRowMapper = (rs, _) -> new Wishlist(
@@ -34,7 +37,7 @@ public class WishlistDao {
     }
 
     public Wishlist findByIsbnAndUser(String isbn, Integer userId) {
-        String sql = "SELECT * FROM wishlist WHERE isbn = ? & user_id = ?";
+        String sql = "SELECT * FROM wishlist WHERE isbn = ? AND user_id = ?";
         return JdbcTemplate.query(sql, wishlistRowMapper, isbn, userId)
                 .stream()
                 .findFirst()
@@ -44,7 +47,7 @@ public class WishlistDao {
 
     public Wishlist save(Wishlist wishlist) {
         String sql = "INSERT INTO wishlist (user_id, isbn, create_time) VALUES (?, ?, ?)";
-        JdbcTemplate.update(sql, wishlist.getUserId(), wishlist.getIsbn(), wishlist.getCreateTime());
+        JdbcTemplate.update(sql, wishlist.getUserId(), wishlist.getIsbn(), dateTimeService.getCurrentDateTime());
 
         String sqlGetIsbn = "SELECT LAST_INSERT_ID()";
         String isbn = JdbcTemplate.queryForObject(sqlGetIsbn, String.class);
@@ -53,9 +56,9 @@ public class WishlistDao {
         return wishlist;
     }
 
-    public boolean delete(String isbn, Integer userId) {
-        String sql = "DELETE FROM wishlist WHERE isbn = ? & user_id = ?";
-        int rowsAffected = JdbcTemplate.update(sql, isbn);
+    public boolean delete(String isbn, Integer id) {
+        String sql = "DELETE FROM wishlist WHERE isbn = ? AND user_id = ?";
+        int rowsAffected = JdbcTemplate.update(sql, isbn, id);
         return rowsAffected > 0;
     }
 
@@ -68,7 +71,7 @@ public class WishlistDao {
     }
 
     public boolean wishlistExists(String isbn, Integer userId) {
-        String checkSql = "SELECT COUNT(*) FROM wishlist WHERE isbn = ? & user_id = ?";
+        String checkSql = "SELECT COUNT(*) FROM wishlist WHERE isbn = ? AND user_id = ?";
         Wishlist wishlist = JdbcTemplate.query(checkSql, wishlistRowMapper, isbn, userId)
                 .stream()
                 .findFirst()

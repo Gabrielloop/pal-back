@@ -2,66 +2,73 @@ package com.greta.PalBack.entities;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class User {
-    private Integer user_id;
-    private String user_name;
-    private String user_mail;
-    private String user_password;
-    private String user_last_login;
-    private String create_time;
+import java.time.LocalDateTime;
 
-    public User(Integer user_id, String user_name, String user_mail, String user_password, String user_last_login, String create_time) {
-        this.user_id = user_id;
-        this.user_name = user_name;
-        this.user_mail = user_mail;
-        this.user_password = user_password;
-        this.user_last_login = user_last_login;
-        this.create_time = create_time;
+public class User {
+    private Integer userId;
+    private String userName;
+    private String userMail;
+    private String userPassword;
+    private LocalDateTime userLastLogin;
+    private LocalDateTime createTime;
+
+    public User(Integer userId, String userName, String userMail, String userPassword, LocalDateTime userLastLogin, LocalDateTime createTime) {
+        this.userId = userId;
+        this.userName = userName;
+        this.userMail = userMail;
+        this.userPassword = userPassword;
+        this.userLastLogin = userLastLogin;
+        this.createTime = createTime;
     }
 
     public User() {
     }
 
     public Integer getUserId() {
-        return user_id;
+        return userId;
     }
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getUserName() {
-        return user_name;
-    }
-    public void setUserName(String user_name) {
-        this.user_name = user_name;
+        return userName;
     }
 
-    public String getUser_mail() {
-        return user_mail;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
-    public void setUserMail(String user_mail) {
-        this.user_mail = user_mail;
+
+    public String getUserMail() {
+        return userMail;
+    }
+
+    public void setUserMail(String userMail) {
+        this.userMail = userMail;
     }
 
     public String getUserPassword() {
-        return user_password;
-    }
-    public void setUserPassword(String user_password) {
-        this.user_password = user_password;
+        return userPassword;
     }
 
-    public String getUserLastLogin() {
-        return user_last_login;
-    }
-    public void setUserLastLogin(String user_last_login) {
-        this.user_last_login = user_last_login;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
-    public String getCreateTime() {
-        return create_time;
-    }
-    public void setCreateTime(String create_time) {
-        this.create_time = create_time;
+    public LocalDateTime getUserLastLogin() {
+        return userLastLogin;
     }
 
+    public void setUserLastLogin(LocalDateTime userLastLogin) {
+        this.userLastLogin = userLastLogin;
+    }
+
+    public LocalDateTime getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(LocalDateTime createTime) {
+        this.createTime = createTime;
+    }
 }

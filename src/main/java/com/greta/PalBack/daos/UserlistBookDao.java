@@ -2,19 +2,23 @@ package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.UserlistBook;
 import com.greta.PalBack.exceptions.ResourceNotFoundException;
+import com.greta.PalBack.services.DateTimeService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 public class UserlistBookDao {
 
 private final JdbcTemplate JdbcTemplate;
+private final DateTimeService dateTimeService;
 
-public UserlistBookDao(JdbcTemplate jdbcTemplate) {
+public UserlistBookDao(JdbcTemplate jdbcTemplate, DateTimeService dateTimeService) {
     this.JdbcTemplate = jdbcTemplate;
+    this.dateTimeService = dateTimeService;
 }
 
 private final RowMapper<UserlistBook> userListBookRowMapper = (rs, _) -> new UserlistBook(
@@ -43,8 +47,7 @@ public List<UserlistBook> joinUserToListBook(Integer ListId, Integer userId) {
 
 public UserlistBook save(UserlistBook userlistBook) {
     String sql = "INSERT INTO userlist_book (userlist_id, isbn, create_time) VALUES (?, ?, ?)";
-    JdbcTemplate.update(sql, userlistBook.getUserListId(), userlistBook.getIsbn(), userlistBook.getCreateTime());
-
+    JdbcTemplate.update(sql, userlistBook.getUserListId(), userlistBook.getIsbn(), dateTimeService.getCurrentDateTime());
     return userlistBook;
 }
 

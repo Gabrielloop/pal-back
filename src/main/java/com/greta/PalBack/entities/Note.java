@@ -1,17 +1,17 @@
 package com.greta.PalBack.entities;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDateTime;
 
 public class Note {
     private String isbn;
-    private Integer user_id;
-    private Integer note_content;
-    private String createTime;
+    private Integer userId;
+    private Integer noteContent;
+    private LocalDateTime createTime;
 
-    public Note(String isbn, Integer user_id, Integer note_content, String createTime) {
+    public Note(String isbn, Integer userId, Integer noteContent, LocalDateTime createTime) {
         this.isbn = isbn;
-        this.user_id = user_id;
-        this.note_content = note_content;
+        this.userId = userId;
+        this.noteContent = noteContent;
         this.createTime = createTime;
     }
 
@@ -21,29 +21,32 @@ public class Note {
     public String getIsbn() {
         return isbn;
     }
+
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
     public Integer getUserId() {
-        return user_id;
+        return userId;
     }
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getNoteContent() {
-        return note_content;
-    }
-    public void setAuthor(Integer note_content) {
-        this.note_content = note_content;
+        return noteContent;
     }
 
-    public String getCreateTime() {
+    public void setNoteContent(Integer noteContent) {
+        this.noteContent = noteContent;
+    }
+
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
-    public void setCreateTime(String createTime) {
+
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
-
 }

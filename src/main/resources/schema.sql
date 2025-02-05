@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS `book`(
   `book_year` int NOT NULL COMMENT 'year',
   `book_updated_time` datetime NOT NULL COMMENT 'updatedTime',
   `create_time` datetime NOT NULL COMMENT 'createTime',
-  PRIMARY KEY (`user_id`)
+  PRIMARY KEY (`isbn`)
 );
 
 CREATE TABLE IF NOT EXISTS `comment` (
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `comment` (
   `create_time` datetime NOT NULL COMMENT 'Create Time',
   PRIMARY KEY (`isbn`,`user_id`),
   KEY `user_id` (`user_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
   FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
 );
 
@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS `favorite`(
   `create_time` datetime NOT NULL COMMENT 'Create Time',
   PRIMARY KEY (`user_id`,`isbn`),
   KEY `isbn` (`isbn`),
-  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
-  FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `userlist`(
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `userlist`(
   `userlist_create_time` datetime NOT NULL COMMENT 'userlistCreateTime',
   PRIMARY KEY (`userlist_id`),
   KEY `user_id` (`user_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE
 );
 
 
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `userlist_book`(
   `create_time` datetime NOT NULL COMMENT 'createTime',
   PRIMARY KEY (`userlist_id`,`isbn`),
   KEY `isbn` (`isbn`),
-  FOREIGN KEY (`userlist_id`) REFERENCES `userlist` (`userlist_id`),
+  FOREIGN KEY (`userlist_id`) REFERENCES `userlist` (`userlist_id`) ON DELETE CASCADE,
   FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
 );
 
@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS `note`(
   `create_time` datetime NOT NULL COMMENT 'Create Time',
   PRIMARY KEY (`isbn`,`user_id`),
   KEY `user_id` (`user_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
-  FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `wishlist`(
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS `wishlist`(
   `create_time` datetime NOT NULL COMMENT 'Create Time',
   PRIMARY KEY (`user_id`,`isbn`),
   KEY `isbn` (`isbn`),
-  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
-  FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
+  FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE,
+  FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`) ON DELETE CASCADE
 );
 

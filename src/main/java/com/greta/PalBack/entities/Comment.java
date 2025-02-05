@@ -1,15 +1,17 @@
 package com.greta.PalBack.entities;
 
+import java.time.LocalDateTime;
+
 public class Comment {
     private String isbn;
-    private Integer user_id;
-    private String comment_content;
-    private String createTime;
+    private Integer userId;
+    private String commentContent;
+    private LocalDateTime createTime;
 
-    public Comment(String isbn, Integer user_id, String comment_content, String createTime) {
+    public Comment(String isbn, Integer userId, String commentContent, LocalDateTime createTime) {
         this.isbn = isbn;
-        this.user_id = user_id;
-        this.comment_content = comment_content;
+        this.userId = userId;
+        this.commentContent = commentContent;
         this.createTime = createTime;
     }
 
@@ -19,29 +21,32 @@ public class Comment {
     public String getIsbn() {
         return isbn;
     }
+
     public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 
     public Integer getUserId() {
-        return user_id;
+        return userId;
     }
-    public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public String getCommentContent() {
-        return comment_content;
-    }
-    public void setAuthor(String comment_content) {
-        this.comment_content = comment_content;
+        return commentContent;
     }
 
-    public String getCreateTime() {
+    public void setCommentContent(String commentContent) {
+        this.commentContent = commentContent;
+    }
+
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
-    public void setCreateTime(String createTime) {
+
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
-
 }

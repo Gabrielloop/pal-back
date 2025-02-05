@@ -3,6 +3,9 @@ package com.greta.PalBack.entities;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 public class Book {
 
@@ -19,10 +22,10 @@ public class Book {
 
     private String publisher;
     private Long year;
-    private String updatedTime;
-    private String createTime;
+    private LocalDateTime updatedTime;
+    private LocalDateTime createTime;
 
-    public Book(String isbn, String title, String author, String publisher, Long year, String updatedTime, String createTime) {
+    public Book(String isbn, String title, String author, String publisher, Long year, LocalDateTime updatedTime, LocalDateTime createTime) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;
@@ -65,16 +68,16 @@ public class Book {
     public void setYear(Long year) {
         this.year = year;
     }
-    public String getUpdatedTime() {
+    public LocalDateTime getUpdatedTime() {
         return updatedTime;
     }
-    public void setUpdatedTime(String updatedTime) {
+    public void setUpdatedTime(LocalDateTime updatedTime) {
         this.updatedTime = updatedTime;
     }
-    public String getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 
