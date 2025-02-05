@@ -40,26 +40,26 @@ CREATE TABLE IF NOT EXISTS `favorite`(
   FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
 );
 
-CREATE TABLE IF NOT EXISTS `userList`(
-  `userList_id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
+CREATE TABLE IF NOT EXISTS `userlist`(
+  `userlist_id` int NOT NULL AUTO_INCREMENT COMMENT 'Primary Key',
   `user_id` int NOT NULL COMMENT 'User ID',
-  `userList_name` varchar(255) NOT NULL COMMENT 'List Name',
-  `userList_description` varchar(255) DEFAULT NULL COMMENT 'List Description',
-  `userList_type` varchar(255) NOT NULL COMMENT 'List Type',
-  `create_time` datetime NOT NULL COMMENT 'Create Time',
-  PRIMARY KEY (`userList_id`),
+  `userlist_name` varchar(255) NOT NULL COMMENT 'List Name',
+  `userlist_description` varchar(255) DEFAULT NULL COMMENT 'List Description',
+  `userlist_type` varchar(255) NOT NULL COMMENT 'List Type',
+  `userlist_create_time` datetime NOT NULL COMMENT 'Create Time',
+  PRIMARY KEY (`userlist_id`),
   KEY `user_id` (`user_id`),
   FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`)
 );
 
 
-CREATE TABLE IF NOT EXISTS `list_book`(
-  `userList_id` int NOT NULL COMMENT 'List ID',
+CREATE TABLE IF NOT EXISTS `userlist_book`(
+  `userlist_id` int NOT NULL COMMENT 'List ID',
   `isbn` varchar(255) NOT NULL COMMENT 'ISBN',
   `create_time` datetime NOT NULL COMMENT 'Create Time',
-  PRIMARY KEY (`userList_id`,`isbn`),
+  PRIMARY KEY (`userlist_id`,`isbn`),
   KEY `isbn` (`isbn`),
-  FOREIGN KEY (`userList_id`) REFERENCES `userList` (`userList_id`),
+  FOREIGN KEY (`userlist_id`) REFERENCES `userlist` (`userlist_id`),
   FOREIGN KEY (`isbn`) REFERENCES `book` (`isbn`)
 );
 

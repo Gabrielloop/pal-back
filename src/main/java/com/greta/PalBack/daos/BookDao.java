@@ -46,8 +46,9 @@ public Book findByIsbn(String isbn) {
 }
 
 public List<Book> findByTitle(String title) {
-    String sql = "Select * FROM book WHERE book_title = ?";
-    return JdbcTemplate.query(sql, bookRowMapper, title);
+    String titleSearch = '%'+title+'%';
+    String sql = "Select * FROM book WHERE book_title LIKE ?";
+    return JdbcTemplate.query(sql, bookRowMapper, titleSearch);
 }
 
 public Book save(Book book) {

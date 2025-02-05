@@ -1,19 +1,18 @@
 package com.greta.PalBack.entities;
 
-public class ListBook {
+public class UserlistBook {
     private Integer userList_id;
     private String isbn;
-    private String list_name;
     private String createTime;
 
-    public ListBook(Integer list_id, String isbn, String list_name, String createTime) {
+    public UserlistBook(Integer userList_id, String isbn, String createTime) {
         this.userList_id = userList_id;
         this.isbn = isbn;
-        this.list_name = list_name;
         this.createTime = createTime;
     }
-    public ListBook() {
+    public UserlistBook() {
     }
+
 
     public Integer getList_id() {
         return userList_id;
@@ -29,14 +28,6 @@ public class ListBook {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
-    }
-
-    public String getList_name() {
-        return list_name;
-    }
-
-    public void setList_name(String list_name) {
-        this.list_name = list_name;
     }
 
     public String getCreateTime() {

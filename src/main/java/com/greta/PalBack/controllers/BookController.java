@@ -37,7 +37,7 @@ public class BookController {
     }
 
     @PutMapping("/update/{isbn}")
-    public ResponseEntity<Book> updateBook(@PathVariable String isbn, @RequestBody Book book) {
+    public ResponseEntity<Book> updateBook(@Valid @PathVariable String isbn, @RequestBody Book book) {
     Book updatedBook = bookDao.update(isbn, book);
     return ResponseEntity.ok(updatedBook);
     }
