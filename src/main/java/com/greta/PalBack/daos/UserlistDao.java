@@ -23,7 +23,7 @@ private final RowMapper<Userlist> userlistRowMapper = (rs, _) -> new Userlist(
         rs.getString("userlist_name"),
         rs.getString("userlist_description"),
         rs.getString("userlist_type"),
-        rs.getTimeStamp("userlist_create_time").toLocalDateTime()
+        rs.getTimestamp("userlist_create_time").toLocalDateTime()
 );
 
 public List<Userlist> findAll() {
