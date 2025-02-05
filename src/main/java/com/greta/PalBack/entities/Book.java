@@ -9,12 +9,13 @@ import java.time.LocalDateTime;
 
 public class Book {
 
-    @Size(min = 10, max = 13, message = "ISBN invalide")
+    @Size(min =10, max = 13, message = "ISBN invalide")
     @NotNull(message = "ISBN requis")
     @NotBlank(message = "ISBN requis")
     private String isbn;
 
     @NotBlank(message = "Titre requis")
+    @Size(min = 1, max = 20, message = "Titre invalide (entre 1 et 20 caractères")
     private String title;
 
     @NotBlank(message = "Auteur requis")
@@ -33,9 +34,6 @@ public class Book {
         this.year = year;
         this.updatedTime = updatedTime;
         this.createTime = createTime;
-    }
-
-    public Book() {
     }
 
     public String getIsbn() {
