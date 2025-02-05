@@ -20,31 +20,37 @@ public UserlistBookDao(JdbcTemplate jdbcTemplate) {
 private final RowMapper<UserlistBook> userListBookRowMapper = (rs, _) -> new UserlistBook(
         rs.getInt("userlist_id"),
         rs.getString("isbn"),
-        rs.getString("create_time")
+        rs.getTimestamp("create_time").toLocalDateTime()
 );
 
 public List<UserlistBook> findAll() {
     String sql = "SELECT * FROM userlist_book";
     return JdbcTemplate.query(sql, userListBookRowMapper);
 }
-public UserlistBook findBylistId(Integer id) {
+public UserlistBook findByUserlistId(Integer listId) {
     String sql = "SELECT * FROM userlist_book WHERE userlist_id = ?";
-    return JdbcTemplate.query(sql, userListBookRowMapper, id)
+    return JdbcTemplate.query(sql, userListBookRowMapper, listId)
             .stream()
             .findFirst()
-            .orElseThrow(() -> new ResourceNotFoundException("Pas de correspondante avec l'id " + id + "."));
+            .orElseThrow(() -> new ResourceNotFoundException("Pas de correspondante " + listId + "."));
 }
 
-public UserlistBook add(UserlistBook userlistBook) {
+public List<UserlistBook> joinUserToListBook(Integer ListId, Integer userId) {
+    String sql = "SELECT ub.userlist_id, ub.isbn, ub.create_time, ul.user_id FROM userlist_book ub INNER JOIN userlist ul ON ub.userlist_id = ul.userlist_id WHERE ub.userlist_id = ? AND ul.user_id = ?";
+    return JdbcTemplate.query(sql, userListBookRowMapper, ListId, userId);
+}
+
+
+public UserlistBook save(UserlistBook userlistBook) {
     String sql = "INSERT INTO userlist_book (userlist_id, isbn, create_time) VALUES (?, ?, ?)";
-    JdbcTemplate.update(sql, userlistBook.getList_id(), userlistBook.getIsbn(), userlistBook.getCreateTime());
+    JdbcTemplate.update(sql, userlistBook.getUserListId(), userlistBook.getIsbn(), userlistBook.getCreateTime());
 
     return userlistBook;
 }
 
-public boolean delete(Integer UserlistId, String isbn) {
-    String sql = "DELETE FROM userlist_book WHERE isbn = ? && userList_id = ?";
-    int rowsAffected = JdbcTemplate.update(sql,isbn, UserlistId);
+public boolean delete(Integer listId, String isbn) {
+    String sql = "DELETE FROM userlist_book WHERE userList_id = ? AND isbn= ?";
+    int rowsAffected = JdbcTemplate.update(sql,listId, isbn);
     return rowsAffected > 0;
     }
 }

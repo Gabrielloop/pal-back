@@ -63,7 +63,7 @@ public Userlist save(Userlist userlist) {
 
 public Userlist update(Integer userlistId, Userlist userlist) {
     String sql = "UPDATE userlist SET userlist_name = ?, userlist_description = ?, userlist_create_time = ? WHERE userlist_id = ?";
-    int rowAffected = JdbcTemplate.update(sql, userlist.getUserlistName(), userlist.getUserlistDescription(), userlist.getUserlistCreatetime());
+    int rowAffected = JdbcTemplate.update(sql, userlist.getUserlistName(), userlist.getUserlistDescription(), userlist.getUserlistCreatetime(), userlistId);
     if(rowAffected <= 0) {
         throw new ResourceNotFoundException("Echec de la modification avec l'isbn " + userlistId + ".");
     }
@@ -72,7 +72,7 @@ public Userlist update(Integer userlistId, Userlist userlist) {
 
 
 public boolean delete(Integer userlistId) {
-    String sql = "DELETE FROM userList WHERE userlist_id = ?";
+    String sql = "DELETE FROM userlist WHERE userlist_id = ?";
     int rowsAffected = JdbcTemplate.update(sql,userlistId);
     return rowsAffected > 0;
 }

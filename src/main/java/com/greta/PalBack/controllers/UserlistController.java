@@ -26,6 +26,11 @@ public class UserlistController {
     public ResponseEntity<Userlist> getUserlistsById(@PathVariable Integer id) {
         return ResponseEntity.ok(userlistDao.findById(id));
     }
+    @GetMapping("/userid/{userid}")
+    public ResponseEntity<List<Userlist>> getUserlistsByUserId(@PathVariable Integer userid) {
+        return ResponseEntity.ok(userlistDao.findAllForUserId(userid));
+    }
+
     @GetMapping("/title/{title}")
     public ResponseEntity<List<Userlist>> getListsByTitle(@PathVariable String title) {
         return ResponseEntity.ok(userlistDao.findByTitle(title));
