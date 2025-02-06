@@ -35,11 +35,6 @@ public List<Book> findAll() {
     return JdbcTemplate.query(sql, bookRowMapper);
 }
 
-public List<Book> findAllForUserId(Integer userId) {
-    String sql = "SELECT * FROM book WHERE user_id = ?";
-    return JdbcTemplate.query(sql, bookRowMapper, userId);
-}
-
 public Book findByIsbn(String isbn) {
     String sql = "SELECT * FROM book WHERE isbn = ?";
     return JdbcTemplate.query(sql, bookRowMapper, isbn)

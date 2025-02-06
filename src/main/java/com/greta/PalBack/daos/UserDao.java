@@ -25,6 +25,7 @@ public UserDao(JdbcTemplate jdbcTemplate, DateTimeService dateTimeService) {
             rs.getString("user_name"),
             rs.getString("user_mail"),
             rs.getString("user_password"),
+            rs.getString("user_role"),
             rs.getTimestamp("user_last_login").toLocalDateTime(),
             rs.getTimestamp("create_time").toLocalDateTime()
     );

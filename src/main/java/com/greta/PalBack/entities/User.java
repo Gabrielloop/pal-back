@@ -9,14 +9,16 @@ public class User {
     private String userName;
     private String userMail;
     private String userPassword;
+    private String userRole;
     private LocalDateTime userLastLogin;
     private LocalDateTime createTime;
 
-    public User(Integer userId, String userName, String userMail, String userPassword, LocalDateTime userLastLogin, LocalDateTime createTime) {
+    public User(Integer userId, String userName, String userMail, String userPassword, String userRole, LocalDateTime userLastLogin, LocalDateTime createTime) {
         this.userId = userId;
         this.userName = userName;
         this.userMail = userMail;
         this.userPassword = userPassword;
+        this.userRole = userRole;
         this.userLastLogin = userLastLogin;
         this.createTime = createTime;
     }
@@ -54,6 +56,14 @@ public class User {
 
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
+    }
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 
     public LocalDateTime getUserLastLogin() {
