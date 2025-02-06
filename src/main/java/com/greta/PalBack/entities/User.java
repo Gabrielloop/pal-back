@@ -26,6 +26,7 @@ public class User {
     public User() {
     }
 
+
     public Integer getUserId() {
         return userId;
     }
