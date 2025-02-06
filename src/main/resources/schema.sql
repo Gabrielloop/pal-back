@@ -5,8 +5,18 @@ CREATE TABLE IF NOT EXISTS `book`(
   `book_publisher` varchar(255) NOT NULL COMMENT 'publisher',
   `book_year` int NOT NULL COMMENT 'year',
   `book_updated_time` datetime NOT NULL COMMENT 'updatedTime',
-  `create_time` datetime NOT NULL COMMENT 'createTime',
+  `book_create_time` datetime NOT NULL COMMENT 'createTime',
   PRIMARY KEY (`isbn`)
+);
+
+CREATE TABLE IF NOT EXISTS `user`(
+  `user_id` int NOT NULL AUTO_INCREMENT COMMENT 'userId',
+  `user_name` varchar(255) NOT NULL COMMENT 'userName',
+  `user_mail` varchar(255) NOT NULL COMMENT 'userMail',
+  `user_password` varchar(255) NOT NULL COMMENT 'userPassword',
+  `user_last_login` datetime NOT NULL COMMENT 'userLastLogin',
+  `create_time` datetime NOT NULL COMMENT 'createTime',
+  PRIMARY KEY (`user_id`)
 );
 
 CREATE TABLE IF NOT EXISTS `comment` (
