@@ -31,8 +31,8 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<User> saveUser(@RequestBody User user) {
-        User createdUser = userDao.save(user);
+    public ResponseEntity<Boolean> saveUser(@RequestBody User user) {
+        boolean createdUser = userDao.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 

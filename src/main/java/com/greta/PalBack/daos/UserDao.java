@@ -2,6 +2,7 @@ package com.greta.PalBack.daos;
 
 import com.greta.PalBack.entities.User;
 import com.greta.PalBack.exceptions.ResourceNotFoundException;
+import com.greta.PalBack.exceptions.UsernameNotFoundException;
 import com.greta.PalBack.services.DateTimeService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -43,15 +44,24 @@ public UserDao(JdbcTemplate jdbcTemplate, DateTimeService dateTimeService) {
                 .orElseThrow(() -> new ResourceNotFoundException("Pas d'utilisateur trouvé avec l'id " + userId + "."));
     }
 
-    public User save(User user) {
-        String sql = "INSERT INTO user (user_name, user_mail, user_password, user_last_login, create_time) VALUES (?, ?, ?, ?, ?)";
-        JdbcTemplate.update(sql, user.getUserName(), user.getUserMail(), user.getUserPassword(), dateTimeService.getCurrentDateTime(), dateTimeService.getCurrentDateTime());
+    public User findByMail(String userMail) {
+        String sql = "SELECT * FROM user WHERE user_mail = ?";
+        return JdbcTemplate.query(sql, userRowMapper, userMail)
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new UsernameNotFoundException("Pas d'utilisateur trouvé avec l'adresse mail " + userMail + "."));
+    }
 
-        String sqlGetUserId = "SELECT LAST_INSERT_ID()";
-        Integer userId = JdbcTemplate.queryForObject(sqlGetUserId, Integer.class);
+    public boolean save(User user) {
+        String sql = "INSERT INTO user (user_name, user_mail, user_password, user_role, user_last_login, create_time) VALUES (?, ?, ?, ?, ?, ?)";
+        int rowsAffected = JdbcTemplate.update(sql, user.getUserName(), user.getUserMail(), user.getUserPassword(), user.getUserRole(), dateTimeService.getCurrentDateTime(), dateTimeService.getCurrentDateTime());
 
-        user.setUserId(userId);
-        return user;
+        return rowsAffected > 0;
+    }
+
+    public boolean existsByMail(String userMail) {
+        String sql = "SELECT COUNT(*) FROM user WHERE user_mail = ?";
+        return JdbcTemplate.queryForObject(sql, Integer.class, userMail) > 0;
     }
 
     public User update(Integer userId, User user) {

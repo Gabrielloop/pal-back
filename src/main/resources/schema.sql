@@ -11,10 +11,10 @@ CREATE TABLE IF NOT EXISTS `book`(
 
 CREATE TABLE IF NOT EXISTS `user`(
   `user_id` int NOT NULL AUTO_INCREMENT COMMENT 'userId',
-  `user_name` varchar(255) NOT NULL COMMENT 'userName',
+  `user_name` varchar(255) NOT NULL UNIQUE COMMENT 'userName',
   `user_mail` varchar(255) NOT NULL COMMENT 'userMail',
   `user_password` varchar(255) NOT NULL COMMENT 'userPassword',
-  `user_role` varchar(20) NOT NULL COMMENT 'userRole',
+  `user_role` varchar(50) NOT NULL COMMENT 'userRole',
   `user_last_login` datetime NOT NULL COMMENT 'userLastLogin',
   `create_time` datetime NOT NULL COMMENT 'createTime',
   PRIMARY KEY (`user_id`)
