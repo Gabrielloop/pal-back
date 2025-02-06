@@ -7,6 +7,9 @@ import com.greta.PalBack.services.DateTimeService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,15 +43,32 @@ public class AuthController {
             return ResponseEntity.badRequest().body("Error: Email is already in use!");
         }
     User newUser = new User(
+            null,
             user.getUserName(),
             user.getUserMail(),
             encoder.encode(user.getUserPassword()),
             "USER",
-            DateTimeService.getCurrentDateTime(),
-            dateTimeService.getCurrentDateTime()
+            null,
+            null
     );
     boolean isUSerSaved = userDao.save(newUser);
 	        return isUSerSaved ? ResponseEntity.ok("User registered successfully!") : ResponseEntity.badRequest().body("Error: User registration failed!");
-}
+    }
+
+
+
+
+
+@PostMapping("/login")
+    public String authenticateUser(@RequestBody User user) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getUserMail(),
+                        user.getUserPassword()
+                )
+        );
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        return jwtUtils.generateToken(userDetails.getUsername());
+    }
 
 }
