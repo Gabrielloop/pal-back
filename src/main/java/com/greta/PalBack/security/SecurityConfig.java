@@ -45,7 +45,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/auth/**", "/test/all").permitAll()
+                                .requestMatchers("/auth/**", "/test/all", "/**").permitAll()
                                 .requestMatchers("/user/**").hasRole("USER")
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
@@ -74,7 +74,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
 
     }
-
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {

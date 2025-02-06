@@ -34,8 +34,6 @@ public class AuthController {
         this.dateTimeService = dateTimeService;
     }
 
-
-
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody User user) {
         boolean alreadyExists = userDao.existsByMail(user.getUserMail());
@@ -54,10 +52,6 @@ public class AuthController {
     boolean isUSerSaved = userDao.save(newUser);
 	        return isUSerSaved ? ResponseEntity.ok("User registered successfully!") : ResponseEntity.badRequest().body("Error: User registration failed!");
     }
-
-
-
-
 
 @PostMapping("/login")
     public String authenticateUser(@RequestBody User user) {
